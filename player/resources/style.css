@@ -37,6 +37,17 @@ CodeEditor#script {
     background-color: $backgroundColor;
     line-number-color: #99CCCC;
     line-number-background-color: $panelBackgroundColor;
+    syntax-error-color: #ff0000;
+    syntax-comment-color: #546e6f;
+    syntax-keyword-color: #c792ea;
+    syntax-operator-color: #89ddff;
+    syntax-identifier-color: #eefff1;
+    syntax-integer-color: #f8c365;
+    syntax-float-color: #f78c6c;
+    syntax-string-color: #c3e883;
+    syntax-bracket-color: #89ddff;
+    syntax-punctuation-color: #89ddff;
+    scrollbar-thickness: 8;
 }
 
 TextEditor#console {
