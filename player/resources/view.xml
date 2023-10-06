@@ -18,5 +18,5 @@
 
     </TopArea>
 
-    <TextEditor id="console" multiline="true" readonly="true" />
+    <TextEditor id="console" readonly="true" />
 </View>

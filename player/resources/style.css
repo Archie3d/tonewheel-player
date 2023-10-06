@@ -61,6 +61,7 @@ TextEditor#console {
     color: $consoleTextColor;
     font-family: <Monospaced>;
     font-size: 10;
+    multiline: true;
 }
 
 TextButton.panel {
