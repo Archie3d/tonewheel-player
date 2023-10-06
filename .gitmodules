@@ -1,0 +1,12 @@
+[submodule "JUCE"]
+	path = JUCE
+	url = https://github.com/juce-framework/JUCE.git
+[submodule "VITRO"]
+	path = VITRO
+	url = git@github.com:Archie3d/VITRO.git
+[submodule "ScriptX"]
+	path = ScriptX
+	url = git@github.com:Archie3d/ScriptX.git
+[submodule "tonewheel"]
+	path = tonewheel
+	url = git@github.com:Archie3d/tonewheel.git

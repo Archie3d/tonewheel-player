@@ -1,0 +1,76 @@
+$backgroundColor: #1F1F1F;
+$panelBackgroundColor: #333333;
+$consoleBackgroundColor: #000000;
+$consoleTextColor: #CCCCCC;
+$buttonBackgroundColor: #0F0F0F;
+$meterTextColor: #FFFF99;
+$panelWidth: 70;
+$consoleHeight: 120;
+
+TopArea {
+    flex-direction: row;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: $consoleHeight;
+}
+
+ControlPanel {
+    background-color: $panelBackgroundColor;
+    flex-direction: column;
+    position: absolute;
+    padding-all: 5;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: $panelWidth;
+
+}
+
+CodeEditor#script {
+    position: absolute;
+    top: 0;
+    left: $panelWidth;
+    right: 0;
+    bottom: 0;
+    background-color: $backgroundColor;
+    line-number-color: #99CCCC;
+    line-number-background-color: $panelBackgroundColor;
+}
+
+TextEditor#console {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: $consoleHeight;
+    background-color: $consoleBackgroundColor;
+    border-color: $consoleBackgroundColor;
+    color: $consoleTextColor;
+    font-family: <Monospaced>;
+    font-size: 10;
+}
+
+TextButton.panel {
+    width: 60;
+    height: 20;
+    margin-top: 5;
+    margin-bottom: 5;
+    background-color: $buttonBackgroundColor;
+}
+
+Label.panel {
+    width: 60;
+    min-height: 20;
+    margin-top: 5;
+    text-align: left;
+}
+
+Label.meter {
+    width: 60;
+    min-height: 20;
+    text-align: left;
+    font-size: 12;
+    color: $meterTextColor;
+}

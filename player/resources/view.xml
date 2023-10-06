@@ -1,0 +1,22 @@
+<View>
+    <TopArea>
+        <ControlPanel>
+            <TextButton id="reload_button" class="panel" text="Reload" />
+            <TextButton id="open_button" class="panel" text="Open..." />
+
+            <Label class="panel" text="Wavs:" />
+            <Label id="samples" class="meter" text="0" />
+
+            <Label class="panel" text="CPU:" />
+            <Label id="cpu_load" class="meter" text="0%" />
+
+            <Label class="panel" text="Voices:" />
+            <Label id="voices" class="meter" text="0" />
+        </ControlPanel>
+
+        <CodeEditor id="script" syntax="js" />
+
+    </TopArea>
+
+    <TextEditor id="console" multiline="true" readonly="true" />
+</View>
