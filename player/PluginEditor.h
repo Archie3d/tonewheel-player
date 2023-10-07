@@ -44,9 +44,9 @@ private:
     std::weak_ptr<vitro::CodeEditor> codeEditor{};
 
     juce::TextEditor* consoleEditor{};
-    juce::Label* samplesLabel{};
-    juce::Label* cpuLoadLabel{};
-    juce::Label* voicesLabel{};
+    std::weak_ptr<vitro::Label> samplesLabel{};
+    std::weak_ptr<vitro::Label> cpuLoadLabel{};
+    std::weak_ptr<vitro::Label> voicesLabel{};
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TonewheelAudioProcessorEditor)
 };

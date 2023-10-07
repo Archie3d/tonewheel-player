@@ -40,22 +40,24 @@ void TonewheelAudioProcessorEditor::resized()
 
 void TonewheelAudioProcessorEditor::timerCallback()
 {
-    if (samplesLabel != nullptr) {
+    const static Identifier attrText("text");
+
+    if (auto ptr{ samplesLabel.lock()} ) {
         int loaded{};
         int total{};
         audioProcessor.getPrebufferStatus(loaded, total);
-        auto strPreload = String (loaded) + "/" + String (total);
-        samplesLabel->setText(strPreload, juce::dontSendNotification);
+        const auto strPreload{ String(loaded) + "/" + String (total) };
+        ptr->setAttribute(attrText, strPreload);
     }
 
-    if (cpuLoadLabel != nullptr) {
-        auto strLoad{ String(int(audioProcessor.getProcessLoad() * 100.0f)) + "%" };
-        cpuLoadLabel->setText(strLoad, dontSendNotification);
+    if (auto ptr{ cpuLoadLabel.lock() }) {
+        const auto strLoad{ String(int(audioProcessor.getProcessLoad() * 100.0f)) + "%" };
+        ptr->setAttribute(attrText, strLoad);
     }
 
-    if (voicesLabel != nullptr) {
-        auto strVoices{ String(audioProcessor.getActiveVoiceCount()) };
-        voicesLabel->setText(strVoices, dontSendNotification);
+    if (auto ptr{ voicesLabel.lock() }) {
+        const auto strVoices{ String(audioProcessor.getActiveVoiceCount()) };
+        ptr->setAttribute(attrText, strVoices);
     }
 }
 
@@ -122,13 +124,13 @@ void TonewheelAudioProcessorEditor::loadUI()
     }
 
     if (auto el{ getComponentElement("samples")})
-        samplesLabel = dynamic_cast<juce::Label*>(el->getComponent());
+        samplesLabel = std::dynamic_pointer_cast<vitro::Label>(el);
 
     if (auto el{ getComponentElement("cpu_load")})
-        cpuLoadLabel = dynamic_cast<juce::Label*>(el->getComponent());
+        cpuLoadLabel = std::dynamic_pointer_cast<vitro::Label>(el);
 
     if (auto el{ getComponentElement("voices")})
-        voicesLabel = dynamic_cast<juce::Label*>(el->getComponent());
+        voicesLabel = std::dynamic_pointer_cast<vitro::Label>(el);
 
     if (auto el{ getComponentElement("script")})
         codeEditor = std::dynamic_pointer_cast<vitro::CodeEditor>(el);
