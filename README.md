@@ -47,7 +47,8 @@ voice_id = engine.trigger({
             //...
         ],
         modulate: {
-            expr: "pitch = 1.0 + cc[1]",  // Modulation expression
+            f0: 200,
+            expr: "lpf.frequency := lpf.frequency + (f0 - lpf.frequency) * 0.01;" // Modulation expression
         }
     });
 ```
@@ -69,7 +70,8 @@ Currently VST exposes 16 setereo buses. Voices can be triggered and attached to 
 
 ```js
 // Setting specific bus gain
-engine.bus[0].gain = 0.5;
+engine.bus[0].gain = 0.5; // 0..1
+engine.bus[0].pan = -0.5; // -1..1
 ```
 
 ## MIDI events
