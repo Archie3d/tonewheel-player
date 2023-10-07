@@ -21,6 +21,11 @@ public:
         wrappedObject = obj;
     }
 
+    void setConsole(Console* c)
+    {
+        console = c;
+    }
+
     template<typename T>
     void addProperty(script::Local<script::Object>& obj,
                 const std::string& name,
@@ -51,13 +56,14 @@ public:
         assert(scriptEngine != nullptr);
     }
 
-    static script::Local<script::Value> createInstance(script::ScriptEngine* scriptEngine, C* obj)
+    static script::Local<script::Value> createInstance(script::ScriptEngine* scriptEngine, C* obj, Console* console = nullptr)
     {
         assert(scriptEngine != nullptr);
 
         script::Local<script::Object> wrapperObj{ scriptEngine->newNativeClass<WrapperClass>() };
         auto* wrapper{ scriptEngine->getNativeInstance<WrapperClass>(wrapperObj) };
         wrapper->setObject(obj);
+        wrapper->setConsole(console);
         wrapper->exposeCustomProperties(wrapperObj);
 
         return wrapperObj;
@@ -67,6 +73,7 @@ public:
 
 protected:
     C* wrappedObject{ nullptr };
+    Console* console{ nullptr };
 };
 
 //==============================================================================
@@ -444,6 +451,8 @@ public:
 
         // FX-chain parameters
         if (trigger.fxChain != nullptr) {
+
+
             for (int i = 0; i < trigger.fxChain->getNumEffects(); ++i) {
                 auto* effect{ trigger.fxChain->getEffectByIndex(i) };
                 const auto fxId{ effect->getId() };
@@ -457,7 +466,7 @@ public:
 
                         if (!name.empty()) {
                             std::string sfxName{ fxId + "." + name };
-                            modulator->addVariable(name, param.getTargetRef());
+                            modulator->addDynamicVariable(sfxName, param.getTargetRef());
                         }
                     }
                 }
@@ -469,8 +478,13 @@ public:
 
         if (modulator->compile(expr))
             trigger.modulator = std::move(modulator);
-        else
+        else {
             DBG("*** Unable to compile modulator " << expr);
+            DBG(modulator->getErrorMessage());
+
+            if (console != nullptr)
+                console->postMessage(String("*** Modulation ") + modulator->getErrorMessage());
+        }
     }
 
     script::Local<script::Value> trigger(const script::Arguments& args)
@@ -768,7 +782,7 @@ void EngineProxy::registerGlobals()
     AudioBusWrapper::registerWithScriptEngine(scriptEngine.get());
     EngineWrapper::registerWithScriptEngine(scriptEngine.get());
 
-    scriptEngine->set(script::String::newString(u8"engine"), EngineWrapper::createInstance(scriptEngine.get(), &engine));
+    scriptEngine->set(script::String::newString(u8"engine"), EngineWrapper::createInstance(scriptEngine.get(), &engine, &console));
     scriptEngine->set(script::String::newString(u8"console"), ConsoleWrapper::createInstance(scriptEngine.get(), &console));
 
     scriptEngine->set(script::String::newString(u8"$dir"), script::String::newString(contentFolder.getFullPathName().toStdString()));
