@@ -113,16 +113,13 @@ void TonewheelAudioProcessor::releaseResources()
 
 #ifndef JucePlugin_PreferredChannelConfigurations
 
-bool TonewheelAudioProcessor::canAddBus(bool isInput) const
+bool TonewheelAudioProcessor::canAddBus([[maybe_unused]] bool isInput) const
 {
     return true;
 }
 
 bool TonewheelAudioProcessor::canRemoveBus(bool isInput) const
 {
-    const auto nInputs{ getBusCount(true) };
-    const auto nOutputs{ getBusCount(false) };
-
     if (isInput)
         return getBusCount(true) > 0;
 
@@ -246,8 +243,8 @@ void TonewheelAudioProcessor::processBlock(AudioBuffer<float>& buffer, MidiBuffe
                 if (busIndex < numOutputBusesToProcess) {
                     float* outL = buffer.getWritePointer(channelIndex, sampleIndex);
                     float* outR = buffer.getWritePointer(channelIndex + 1, sampleIndex);
-                    ::memset(outL, 0, sizeof(float) * processThisTime);
-                    ::memset(outR, 0, sizeof(float) * processThisTime);
+                    ::memset(outL, 0, sizeof(float) * (size_t)processThisTime);
+                    ::memset(outR, 0, sizeof(float) * (size_t)processThisTime);
                     buses[busIndex].processAndMix(outL, outR, processThisTime);
                 } else {
                     // Process inaudible but to a dummy buffer
@@ -288,8 +285,6 @@ AudioProcessor::BusesProperties TonewheelAudioProcessor::getBusesProperties()
 
 void TonewheelAudioProcessor::processMidi(MidiBuffer& midiMessages)
 {
-    static int voiceId;
-
     if (midiMessages.getNumEvents() == 0)
         return;
 
