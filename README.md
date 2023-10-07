@@ -27,16 +27,16 @@ voice_id = engine.trigger({
         offset: 0,         // Offset (in number of samples) from the sample start
         gain: 1.0,         // Voice amplitude
         tune: 1.0,         // Playback speed factor that affects the tune
-        loop: [
+        loop: {
             begin: 12400,  // Sample loop begin position
             end:   34600,  // Sample loop end position
             xfade: 1024,   // Number of cross-fade samples for the loop
-        ],
+        },
         envelope: [        // Envelope
             attack: 0.01,
             decay: 0.1,
             sustain: 0.7,
-            release, 1.2
+            release: 1.2
         ],
         fx: [              // Effects chain to be attached to this voice
             {
