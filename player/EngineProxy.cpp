@@ -847,9 +847,13 @@ void EngineProxy::callOnMidiMessage(const tonewheel::MidiMessage& msg)
         auto onMidiMessage{ f.asFunction() };
 
         auto obj{ script::Object::newObject() };
+
+        obj.set(script::String::newString(u8"channel"), script::Number::newNumber(msg.getChannel()));
+
         obj.set(script::String::newString(u8"noteOn"),           script::Boolean::newBoolean(msg.isNoteOn()));
         obj.set(script::String::newString(u8"noteOff"),          script::Boolean::newBoolean(msg.isNoteOff()));
         obj.set(script::String::newString(u8"controller"),       script::Boolean::newBoolean(msg.isController()));
+        obj.set(script::String::newString(u8"pitchBend"),        script::Boolean::newBoolean(msg.isPitchBend()));
 
         if (msg.isNoteOn() || msg.isNoteOff()) {
             obj.set(script::String::newString(u8"noteNumber"),       script::Number::newNumber(msg.getNoteNumber()));
@@ -859,6 +863,10 @@ void EngineProxy::callOnMidiMessage(const tonewheel::MidiMessage& msg)
         if (msg.isController()) {
             obj.set(script::String::newString(u8"controllerNumber"), script::Number::newNumber(msg.getControllerNumber()));
             obj.set(script::String::newString(u8"controllerValue"),  script::Number::newNumber(float(msg.getControllerValueAsFloat())));
+        }
+
+        if (msg.isPitchBend()) {
+            obj.set(script::String::newString(u8"pitch"), script::Number::newNumber(float(msg.getPitchBendAsFloat())));
         }
 
         try {
